@@ -7,7 +7,6 @@ import { generateSummaryFromOpenAI } from "@/lib/openai";
 import { formatFileNameAsTitle } from "@/utils/format-utils";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { title } from "process";
 
 interface PdfSummaryType{
     userId?:string;
@@ -93,7 +92,8 @@ export async function generateSummary(uploadResponse:[{
 async function savedPdfSummary({ userId,fileUrl, summary, title, fileName}: PdfSummaryType){
     try {
         const sql = await getDbConnection()
-        await sql`INSERT INTO pdf_summaries(user_id, original_file_url, summary_text, title, file_name) VALUES(${userId}, ${fileUrl}, ${summary}, ${title}, ${fileName})`
+      const [savedSummary] =  await sql`INSERT INTO pdf_summaries(user_id, original_file_url, summary_text, title, file_name) VALUES(${userId}, ${fileUrl}, ${summary}, ${title}, ${fileName}) RETURNING id, summary_text`
+      return savedSummary
     } catch (error) {
         console.log("Error saving PDF summary", error)
         throw error

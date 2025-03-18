@@ -31,13 +31,12 @@ export default function UploadForm() {
     onClientUploadComplete: () => {
       toast.success("✅ PDF uploaded successfully! 🎉");
     },
-    onUploadError: (err) => {
-      toast.error("❌ Upload error");
-    },
+    onUploadError: (err) => {},
     onUploadBegin({ file }) {
       console.log("upload has begun for", file);
     },
   });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -54,20 +53,27 @@ export default function UploadForm() {
         setIsLoading(false);
         return;
       }
+
       const loadingToast = toast.loading("📄 Uploading your PDF...");
 
+      console.log("Starting upload...");
       const resp = await startUpload([file]);
+
+      // ✅ Move toast dismiss above the error check
+      toast.dismiss(loadingToast);
+
       if (!resp) {
         toast.error("❌ Something went wrong. Please use a different file.");
         setIsLoading(false);
         return;
       }
+
       toast.success(
         "✨ Processing PDF... Hang tight! AI is analyzing your document."
       );
-      toast.dismiss(loadingToast);
 
       const result = await generateSummary(resp);
+      console.log("Upload complete:", resp);
 
       const { data = null, message = null } = result || {};
       if (data) {
@@ -88,13 +94,13 @@ export default function UploadForm() {
         }
       }
     } catch (error) {
-      setIsLoading(false);
       console.error("Error occurred", error);
       formRef.current?.reset();
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
       <UploadFormInput

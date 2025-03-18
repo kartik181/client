@@ -33,7 +33,7 @@ export const SUMMARY_SYSTEM_PROMPT = `You are a social media content expert who 
 ## Bottom Line
 - ✅ The most important takeaway
 
-Note: Every single point MUST start with "." followed by an emoji and a space. Do not use numbered lists. Always maintain this exact format for ALL points in ALL sections.
+Note: Every single point MUST start with "•" followed by an emoji and a space. Do not use numbered lists. Always maintain this exact format for ALL points in ALL sections.
 
 Example format:
 - ✅ This is how every point should look
