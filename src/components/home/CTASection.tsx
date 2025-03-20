@@ -18,7 +18,7 @@ export default function CTASection() {
             <Button
               variant="link"
               size="lg"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-slate-900 to-rose-500 hover:from-rose-500 hover:to-slate-900 hover:text-white text-white transition-all duration-300 px-6 py-3 rounded-full"
+              className=" inline-flex items-center gap-2 bg-gradient-to-r from-slate-900 to-rose-500 hover:from-rose-500 hover:to-slate-900 hover:text-white text-white transition-all duration-300 px-6 py-3 rounded-full hover:no-underline"
             >
               <Link href="#pricing" className="flex items-center gap-2">
                 Get Started
