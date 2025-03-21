@@ -16,9 +16,13 @@ export const metadata: Metadata = {
   title: "AI-Powered PDF Summarization",
   description:
     "Save hours of reading time. Transform lengthy PDF into clear, accurate summaries in seconds. ",
-    icons:{
-      icon: '/s.png'
-    }
+  icons: {
+    icon: "/s.png",
+  },
+  metadataBase: new URL(ORIGIN_URL),
+  alternates: {
+    canonical: ORIGIN_URL,
+  },
 };
 
 export default function RootLayout({
