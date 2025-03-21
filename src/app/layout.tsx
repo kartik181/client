@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Save hours of reading time. Transform lengthy PDF into clear, accurate summaries in seconds. ",
   icons: {
-    icon: "/s.png",
+    icon: "/s.svg",
   },
   metadataBase: new URL(ORIGIN_URL),
   alternates: {
