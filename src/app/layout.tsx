@@ -16,10 +16,6 @@ export const metadata: Metadata = {
   title: "AI-Powered PDF Summarization",
   description:
     "Save hours of reading time. Transform lengthy PDF into clear, accurate summaries in seconds. ",
-  metadataBase: new URL(ORIGIN_URL),
-  alternates: {
-    canonical: ORIGIN_URL,
-  },
 };
 
 export default function RootLayout({
