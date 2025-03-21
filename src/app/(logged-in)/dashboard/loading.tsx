@@ -46,7 +46,7 @@ function SummaryCardSkeleton() {
       variants={itemVariants}
       initial="hidden"
       animate="visible"
-      className="rounded-lg border bg-card text-card-foreground shadow-sm"
+      className="rounded-lg border bg-card text-card-foreground shadow-xs"
     >
       <Skeleton className="h-48 w-full rounded-lg" />
     </MotionDiv>

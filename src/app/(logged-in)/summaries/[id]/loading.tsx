@@ -26,7 +26,7 @@ export default function LoadingSummary() {
             <HeaderSkeleton />
             <div className="relative overflow-hidden">
               <div className="relative p-8 bg-white/80 backdrop-blur-md rounded-2xl border border-rose-100/30">
-                <div className="absolute inset-0 bg-gradient-to-br from-rose-50/50 via-orange-50/30 to-transparent opacity-50 rounded-3xl">
+                <div className="absolute inset-0 bg-linear-to-br from-rose-50/50 via-orange-50/30 to-transparent opacity-50 rounded-3xl">
                   <div className=" absolute top-4 right-4 text-rose-300/20">
                     <Skeleton className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>

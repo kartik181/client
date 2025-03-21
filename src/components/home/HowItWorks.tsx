@@ -36,8 +36,8 @@ export default function HowItWorksSection() {
           className="pointer-events-none absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
         >
           <div
-            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] 
-              -translate-x-1/2 bg-gradient-to-br from-emerald-500 via-teal-500 
+            className="relative left-[calc(50%+3rem)] aspect-1155/678 w-[36.125rem] 
+              -translate-x-1/2 bg-linear-to-br from-emerald-500 via-teal-500 
               to-cyan-500 opacity-20 sm:left-[calc(40%-30rem)] sm:w-[40.1875rem]"
             style={{
               clipPath:
@@ -98,9 +98,9 @@ export default function HowItWorksSection() {
 
 function StepItem({ icon, label, description }: Step) {
   return (
-    <div className="relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-rose-500/50 transition-colors group w-fit lg:w-full mx-auto">
+    <div className="relative p-6 rounded-2xl bg-white/5 backdrop-blur-xs border border-white/10 hover:border-rose-500/50 transition-colors group w-fit lg:w-full mx-auto">
       <div className="flex flex-col gap-4 h-full">
-        <div className="flex items-center justify-center h-24 w-24 mx-auto rounded-2xl bg-gradient-to-br from-rose-500/10 to-transparent group-hover:from-rose-500/20 transition-colors">
+        <div className="flex items-center justify-center h-24 w-24 mx-auto rounded-2xl bg-linear-to-br from-rose-500/10 to-transparent group-hover:from-rose-500/20 transition-colors">
           <div className="text-rose-500">{icon}</div>
         </div>
         <div className="flex flex-col flex-1 gap-1 justify-between">

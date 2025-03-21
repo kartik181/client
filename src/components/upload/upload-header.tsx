@@ -8,7 +8,7 @@ export default function UploadHeader() {
     <div className="flex flex-col items-center justify-center gap-6 text-center">
       <MotionDiv
         variants={itemVariants}
-        className="relative p-[1px] overflow-hidden rounded-full bg-gradient-to-r from-rose-200 via-rose-500 to-rose-800 animate-gradient-x group"
+        className="relative p-[1px] overflow-hidden rounded-full bg-linear-to-r from-rose-200 via-rose-500 to-rose-800 animate-gradient-x group"
       >
         <Badge
           variant={"secondary"}
