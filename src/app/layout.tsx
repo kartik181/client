@@ -3,8 +3,9 @@ import { Source_Sans_3 as FrontSans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/common/header";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "@/components/ui/sonner";
 import ToastProvider from "@/components/ui/toast";
+import { ORIGIN_URL } from "@/utils/contanst";
+
 const fontSans = FrontSans({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -12,9 +13,13 @@ const fontSans = FrontSans({
 });
 
 export const metadata: Metadata = {
-  title: "AI-Poweredd PDF Summarization",
+  title: "AI-Powered PDF Summarization",
   description:
     "Save hours of reading time. Transform lengthy PDF into clear, accurate summaries in seconds. ",
+  metadataBase: new URL(ORIGIN_URL),
+  alternates: {
+    canonical: ORIGIN_URL,
+  },
 };
 
 export default function RootLayout({
