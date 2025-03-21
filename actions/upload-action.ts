@@ -16,38 +16,53 @@ interface PdfSummaryType{
        fileName:string;
     }
 
-
-export async function generateSummary(uploadResponse:[{
-    serverData:{
-        userId: string;
-        file:{
-            url:string;
-            name:string;
-        }
-    }
-}]){
-    if(!uploadResponse){
-        return {
+export async function generatePdfText({
+    fileUrl,
+}:{
+    fileUrl:string;
+}){
+    if(!fileUrl){
+        return{
             success: false,
-            message: "File upload failed",
-            data:null,
+            message: 'File upload failed',
+            data:null
         }
     }
-    const {serverData:{
-        userId,
-        file: {url: pdfUrl,name: fileName}
-    },
- } = uploadResponse[0]
- if(!pdfUrl){
-    return {
-        success: false,
-        message: "File upload failed",
-        data:null,
+    try {
+        const pdfText = await fetchAndExtractPdfText(fileUrl)
+        console.log({pdfText})
+
+        if(!pdfText){
+            return{
+                success: false,
+                message: 'Failed to fetch and extract Pdf',
+                data:null
+            }
+        }
+        return {
+            success: true,
+            message: "pDf text generated successfully",
+            data:{
+                pdfText
+            }
+        }
+    } catch (error) {
+        return{
+            success: false,
+            message: "failed  to extract pdf",
+            data:null
+        }
     }
- }
+}
+
+export async function generateSummary( {
+    pdfText,
+    fileName
+}:{
+    pdfText:string;
+    fileName:string;
+}){
  try {
-    const pdfText = await fetchAndExtractPdfText(pdfUrl)
-    console.log({pdfText})
     let summary 
     try {
         summary = await generateSummaryFromOpenAI(pdfText)
@@ -70,19 +85,18 @@ export async function generateSummary(uploadResponse:[{
             data:null,
         }
     }
-    const FormattedFileName = formatFileNameAsTitle(fileName)
     return{
         success: true,
         message: "Summary generated successfully",
         data:{
-            title: FormattedFileName,
+            title: fileName,
             summary,
         }
     }
  } catch (error) {
     return {
         success: false,
-        message: "File upload failed",
+        message: "Failed to generate summary",
         data:null,
     }
  }

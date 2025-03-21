@@ -4,12 +4,14 @@ import UploadFormInput from "./upload-form-input";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
 import {
+  generatePdfText,
   generateSummary,
   storedPdfSummaryAction,
 } from "../../../actions/upload-action";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingSkeleton } from "./loading-skeleton";
+import { formatFileNameAsTitle } from "@/utils/format-utils";
 
 const schema = z.object({
   file: z
@@ -32,9 +34,13 @@ export default function UploadForm() {
     onClientUploadComplete: () => {
       toast.success("✅ PDF uploaded successfully! 🎉");
     },
-    onUploadError: (err) => {},
-    onUploadBegin({ file }) {
-      console.log("upload has begun for", file);
+    onUploadError: (err) => {
+      toast.error(
+        `Error occurred while uploading: ${err.message || "Unknown error"}`
+      );
+    },
+    onUploadBegin(data) {
+      console.log("upload has begun for", data);
     },
   });
 
@@ -47,10 +53,6 @@ export default function UploadForm() {
 
       const validatedFields = schema.safeParse({ file });
       if (!validatedFields.success) {
-        console.log(
-          validatedFields.error.flatten().fieldErrors.file?.[0] ??
-            "Invalid file"
-        );
         setIsLoading(false);
         return;
       }
@@ -58,12 +60,12 @@ export default function UploadForm() {
       const loadingToast = toast.loading("📄 Uploading your PDF...");
 
       console.log("Starting upload...");
-      const resp = await startUpload([file]);
+      const Uploadresp = await startUpload([file]);
 
       // ✅ Move toast dismiss above the error check
       toast.dismiss(loadingToast);
 
-      if (!resp) {
+      if (!Uploadresp) {
         toast.error("❌ Something went wrong. Please use a different file.");
         setIsLoading(false);
         return;
@@ -73,26 +75,33 @@ export default function UploadForm() {
         "✨ Processing PDF... Hang tight! AI is analyzing your document."
       );
 
-      const result = await generateSummary(resp);
-      console.log("Upload complete:", resp);
+      let storeResult: any;
 
-      const { data = null, message = null } = result || {};
-      if (data) {
-        let storeResult: any;
-        toast.success(
-          "📄 Saving PDF... Hang tight! We are saving your summary! ✨"
-        );
-        if (data.summary) {
-          storeResult = await storedPdfSummaryAction({
-            summary: data.summary,
-            fileUrl: resp[0].serverData.file.url,
-            title: data.title,
-            fileName: file.name,
-          });
-          toast.success("✨ Summary Generated! Your summary has been saved!");
-          formRef.current?.reset();
-          router.push(`/summaries/${storeResult.data.id}`);
-        }
+      const FormattedFileName = formatFileNameAsTitle(file.name);
+
+      const result = await generatePdfText({
+        fileUrl: Uploadresp[0].serverData.fileUrl,
+      });
+      toast.success("📄 Generate PDF Summary.");
+      const Summaryresult = await generateSummary({
+        pdfText: result?.data?.pdfText ?? "",
+        fileName: FormattedFileName,
+      });
+      toast.success(
+        "📄 Saving PDF... Hang tight! We are saving your summary! ✨"
+      );
+      const { data = null, message = null } = Summaryresult || {};
+
+      if (data?.summary) {
+        storeResult = await storedPdfSummaryAction({
+          summary: data.summary,
+          fileUrl: Uploadresp[0].serverData.fileUrl,
+          title: FormattedFileName,
+          fileName: file.name,
+        });
+        toast.success("✨ Summary Generated! Your summary has been saved!");
+        formRef.current?.reset();
+        router.push(`/summaries/${storeResult.data.id}`);
       }
     } catch (error) {
       console.error("Error occurred", error);
